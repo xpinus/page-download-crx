@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {} from "vue";
-import { usePanel } from "./hooks/usePanel";
-import { humanSize } from "./utils";
+import { useTemplateRef } from "vue";
+import { usePanel } from "@/hooks/usePanel";
+import { humanSize } from "@/utils";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
+import ConfigDialog from "@/components/ConfigDialog.vue";
 
 const {
+  config,
   loading,
   enable,
   statistics,
@@ -20,11 +22,20 @@ const {
   filterHandler,
   selectionChangeHandler,
 } = usePanel();
+
+const configRef = useTemplateRef<typeof ConfigDialog>("configRef");
+function openConfigDialog() {
+  configRef.value?.open();
+}
 </script>
 
 <template>
   <el-config-provider :locale="zhCn">
-    <div v-loading="loading" element-loading-text="正在获取资源压缩文件...">
+    <div
+      class=""
+      v-loading="loading"
+      element-loading-text="正在获取资源压缩文件..."
+    >
       <div
         class="top flex items-center justify-between border-b border-b-gray-300 px-4 py-1"
       >
@@ -47,12 +58,13 @@ const {
             >
               <svg-icon name="clear"></svg-icon>
             </div>
-            <!-- <div
-            class="hover:text-primary flex cursor-pointer items-center [&_svg]:h-4 [&_svg]:w-4"
-            title="设置"
-          >
-            <svg-icon name="setting"></svg-icon>
-          </div> -->
+            <div
+              class="hover:text-primary flex cursor-pointer items-center [&_svg]:h-4 [&_svg]:w-4"
+              title="设置"
+              @click="openConfigDialog()"
+            >
+              <svg-icon name="setting"></svg-icon>
+            </div>
           </div>
 
           <ul class="statistics flex items-center gap-4 text-sm text-zinc-600">
@@ -99,10 +111,12 @@ const {
             :data="resources"
             row-key="uri"
             style="width: 100%"
+            height="calc(100vh - 3rem)"
             @selection-change="selectionChangeHandler"
           >
             <el-table-column type="selection" width="55" />
             <el-table-column
+              v-if="config.method_enable"
               prop="method"
               label="方法"
               align="center"
@@ -154,4 +168,6 @@ const {
       </div>
     </div>
   </el-config-provider>
+
+  <ConfigDialog ref="configRef" />
 </template>

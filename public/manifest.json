@@ -1,7 +1,7 @@
 {
   "name": "网页下载器",
   "description": "支持 Manifest V3, 打包下载全部网页资源（JS/CSS/HTML/图片等）",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "manifest_version": 3,
   "icons": {
     "16": "16.png",
@@ -18,5 +18,6 @@
     }
   },
   "devtools_page": "devtools.html",
+  "permissions": ["storage"],
   "homepage_url": "https://github.com/xpinus/page-download-crx"
 }

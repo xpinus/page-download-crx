@@ -1,4 +1,5 @@
 import JSZip from "jszip";
+import type { ConfigParams } from "@/hooks/useConfig";
 
 export const isFirefox = navigator.userAgent.includes("Firefox");
 
@@ -178,7 +179,10 @@ export function getResources() {
 }
 
 // 通过 har 日志打包下载数据
-export async function downloadByHar(resources: Resource[]) {
+export async function downloadByHar(
+  resources: Resource[],
+  config: ConfigParams,
+) {
   let log = ""; // 正常日志
   let logEmpty = ""; // 空内容的文件日志
 
@@ -205,7 +209,12 @@ export async function downloadByHar(resources: Resource[]) {
       logEmpty += `${status}\t${method}\t${humanSize(size)}\t${url}\n`; // 空内容的文件日志
       continue;
     }
-    let zipFile = getZipName(url, mimeType, method, true); // 生成 zip 路径
+    let zipFile = getZipName(
+      url,
+      mimeType,
+      config.method_enable ? method : "",
+      true,
+    ); // 生成 zip 路径
     if (!zipPaths[zipFile]) zipPaths[zipFile] = 1;
     else {
       zipPaths[zipFile]++;

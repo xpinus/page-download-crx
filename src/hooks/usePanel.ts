@@ -1,8 +1,10 @@
 import { reactive, ref, computed, markRaw } from "vue";
 import { isFirefox, getZipName, downloadByHar, humanSize } from "@/utils";
 import type { TableColumnCtx } from "element-plus";
+import { useConfig } from "./useConfig";
 
 export function usePanel() {
+  const { config } = useConfig();
   const enable = ref(true); // 是否开始资源获取
   const statistics = reactive({
     size: 0,
@@ -118,7 +120,7 @@ export function usePanel() {
   // 下载已加载的资源
   async function download() {
     loading.value = true;
-    await downloadByHar(selectedResources.value).catch((_) => null);
+    await downloadByHar(selectedResources.value, config).catch((_) => null);
     loading.value = false;
   }
 
@@ -138,6 +140,7 @@ export function usePanel() {
   }
 
   return {
+    config,
     loading,
     enable,
     statistics,

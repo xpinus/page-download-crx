@@ -1,0 +1,35 @@
+import { reactive } from "vue";
+
+export type ConfigParams = {
+  method_enable: boolean;
+};
+
+const config = reactive<ConfigParams>({
+  method_enable: true, // 是否显示请求方法列
+});
+
+async function loadConfig() {
+  if (import.meta.env.DEV) return;
+
+  let storageConfig = {};
+  try {
+    const keys = Object.keys(config);
+    storageConfig = await chrome.storage.sync.get(keys);
+  } catch (err) {
+    console.error(err);
+  }
+  Object.assign(config, storageConfig);
+  console.log("storageConfig", storageConfig, config);
+}
+loadConfig();
+
+function updateConfig(obj: ConfigParams) {
+  Object.assign(config, obj);
+
+  if (import.meta.env.DEV) return;
+  chrome.storage.sync.set(config);
+}
+
+export function useConfig() {
+  return { config, updateConfig };
+}
