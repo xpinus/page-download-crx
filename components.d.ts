@@ -15,6 +15,7 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
   }
   export interface ComponentCustomProperties {

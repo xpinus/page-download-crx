@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useConfig } from "@/hooks/useConfig";
+import SvgIcon from "@/components/SvgIcon.vue";
 
 const dialogVisible = ref(false);
 const { config, updateConfig } = useConfig();
@@ -34,12 +35,44 @@ defineExpose({
   >
     <el-form :model="form" label-position="right" label-width="auto">
       <el-form-item label="支持Method过滤">
+        <template v-slot:label>
+          <span>支持Method过滤</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="关闭后导出不会区分method文件夹"
+            placement="top"
+          >
+            <svg-icon
+              name="tooltip"
+              width="16"
+              height="16"
+              class="relative top-[8px] left-[2px]"
+            />
+          </el-tooltip>
+        </template>
         <el-switch v-model="form.method_enable" />
       </el-form-item>
       <el-form-item label="支持Host过滤">
+        <template v-slot:label>
+          <span>支持Host过滤</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="关闭后只导出当前host资源"
+            placement="top"
+          >
+            <svg-icon
+              name="tooltip"
+              width="16"
+              height="16"
+              class="relative top-[8px] left-[2px]"
+            />
+          </el-tooltip>
+        </template>
         <el-switch v-model="form.host_enable" />
       </el-form-item>
-      <el-form-item label="加载日志">
+      <el-form-item label="导出加载日志">
         <el-switch v-model="form.log_enable" />
       </el-form-item>
     </el-form>
