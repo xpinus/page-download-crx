@@ -29,6 +29,7 @@ export function usePanel() {
       value: item,
     }));
   });
+  const inspectedWindowHost = ref<string>("");
   const selectedResources = ref<Resource[]>([]);
   const selectedSize = computed(() => {
     return humanSize(
@@ -38,6 +39,18 @@ export function usePanel() {
 
   if (!import.meta.env.DEV) {
     chrome.devtools.network.onRequestFinished.addListener(onRequest); // 网络请求完成
+
+    chrome.devtools.inspectedWindow.eval(
+      "location.host",
+      (result, isException) => {
+        if (isException) {
+          console.error("Error evaluating expression:", isException);
+        } else {
+          console.log("Host:", result);
+          inspectedWindowHost.value = result as unknown as string;
+        }
+      },
+    );
   }
 
   // 网络请求完成
@@ -78,6 +91,15 @@ export function usePanel() {
     } else {
       path = getZipName(url, mimeType); // 生成 zip 路径
       host = new URL(url).host;
+    }
+
+    if (
+      !config.host_enable &&
+      inspectedWindowHost.value &&
+      host &&
+      host !== inspectedWindowHost.value
+    ) {
+      return;
     }
 
     methods.value.add(method);

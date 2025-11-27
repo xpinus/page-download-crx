@@ -125,6 +125,7 @@ function openConfigDialog() {
               :filter-method="filterHandler"
             />
             <el-table-column
+              v-if="config.host_enable"
               prop="host"
               label="主机域名"
               align="center"

@@ -232,7 +232,9 @@ export async function downloadByHar(
     }
   }
 
-  zip.file("log.txt", log); // 日志
+  if (config.log_enable) {
+    zip.file("log.txt", log); // 日志
+  }
 
   // 生成 zip 包，并下载文件
   await zip

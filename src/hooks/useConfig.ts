@@ -2,10 +2,14 @@ import { reactive } from "vue";
 
 export type ConfigParams = {
   method_enable: boolean;
+  host_enable: boolean;
+  log_enable: boolean;
 };
 
 const config = reactive<ConfigParams>({
   method_enable: true, // 是否显示请求方法列
+  host_enable: true, // 是否显示Host列
+  log_enable: true, // 是否下载加载日志
 });
 
 async function loadConfig() {

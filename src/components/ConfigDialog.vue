@@ -32,9 +32,15 @@ defineExpose({
     width="500"
     body-class="px-12 py-4"
   >
-    <el-form :model="form">
-      <el-form-item label="使用Method">
+    <el-form :model="form" label-position="right" label-width="auto">
+      <el-form-item label="支持Method过滤">
         <el-switch v-model="form.method_enable" />
+      </el-form-item>
+      <el-form-item label="支持Host过滤">
+        <el-switch v-model="form.host_enable" />
+      </el-form-item>
+      <el-form-item label="加载日志">
+        <el-switch v-model="form.log_enable" />
       </el-form-item>
     </el-form>
     <template #footer>
