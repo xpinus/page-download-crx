@@ -1,6 +1,32 @@
 import JSZip from "jszip";
 import type { ConfigParams } from "@/hooks/useConfig";
 
+// 根据 MIME 类型返回资源分类
+export function getCategory(mimeType: string): string {
+  if (!mimeType) return '其他';
+  const mime = mimeType.toLowerCase();
+  if (mime.includes('image')) return '图片';
+  if (mime.includes('video')) return '视频';
+  if (mime.includes('audio')) return '音频';
+  if (mime.includes('font') || mime.includes('woff') || mime.includes('ttf') || mime.includes('otf')) return '字体';
+  if (mime.includes('css') || mime.includes('stylesheet')) return '样式';
+  if (mime.includes('javascript') || mime.includes('ecmascript') || mime.includes('jscript')) return '脚本';
+  if (mime.includes('html')) return 'HTML';
+  if (mime.includes('json')) return 'JSON';
+  if (mime.includes('xml')) return 'XML';
+  if (mime.includes('pdf') || mime.includes('msword') || mime.includes('spreadsheet') || mime.includes('presentation') || mime.includes('document')) return '文档';
+  if (mime.includes('zip') || mime.includes('tar') || mime.includes('gzip') || mime.includes('compress') || mime.includes('rar')) return '压缩包';
+  return '其他';
+}
+
+
+// 判断 MIME 类型是否属于视频或音频
+export function isVideoAudio(mimeType: string): boolean {
+  if (!mimeType) return false;
+  const mime = mimeType.toLowerCase();
+  return mime.includes("video") || mime.includes("audio");
+}
+
 export const isFirefox = navigator.userAgent.includes("Firefox");
 
 // 获取资源内容

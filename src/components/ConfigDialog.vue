@@ -75,6 +75,28 @@ defineExpose({
       <el-form-item label="导出加载日志">
         <el-switch v-model="form.log_enable" />
       </el-form-item>
+      <el-form-item label="支持分类过滤">
+        <template v-slot:label>
+          <span>支持分类过滤</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="关闭后不显示资源分类列"
+            placement="top"
+          >
+            <svg-icon
+              name="tooltip"
+              width="16"
+              height="16"
+              class="relative top-[8px] left-[2px]"
+            />
+          </el-tooltip>
+        </template>
+        <el-switch v-model="form.category_enable" />
+      </el-form-item>
+      <el-form-item label="大文件阈值(MB)">
+        <el-input-number v-model="form.large_file_threshold" :min="1" :max="500" size="small" />
+      </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">

@@ -4,12 +4,16 @@ export type ConfigParams = {
   method_enable: boolean;
   host_enable: boolean;
   log_enable: boolean;
+  category_enable: boolean;
+  large_file_threshold: number;
 };
 
 const config = reactive<ConfigParams>({
   method_enable: true, // 是否显示请求方法列
   host_enable: true, // 是否显示Host列
   log_enable: true, // 是否下载加载日志
+  category_enable: true, // 是否显示资源分类列
+  large_file_threshold: 20, // 大文件阈值(MB)
 });
 
 async function loadConfig() {

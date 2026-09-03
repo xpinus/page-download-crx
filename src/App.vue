@@ -2,7 +2,7 @@
 import { useTemplateRef } from "vue";
 import { usePanel } from "@/hooks/usePanel";
 import { humanSize } from "@/utils";
-import { ElConfigProvider } from "element-plus";
+import { ElConfigProvider, ElMessage } from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import ConfigDialog from "@/components/ConfigDialog.vue";
 
@@ -16,9 +16,14 @@ const {
   selectedSize,
   methodFilters,
   hostFilters,
+  categoryFilters,
+  largeFiles,
+  largeFilesVisible,
   clear,
   refresh,
   download,
+  confirmLargeDownload,
+  cancelLargeDownload,
   filterHandler,
   selectionChangeHandler,
 } = usePanel();
@@ -138,6 +143,15 @@ function openConfigDialog() {
               </template>
             </el-table-column>
             <el-table-column
+              v-if="config.category_enable"
+              prop="category"
+              label="分类"
+              align="center"
+              width="90"
+              :filters="categoryFilters"
+              :filter-method="filterHandler"
+            />
+            <el-table-column
               prop="path"
               label="路径"
               align="center"
@@ -169,6 +183,37 @@ function openConfigDialog() {
       </div>
     </div>
   </el-config-provider>
+
+  <!-- 大文件下载确认对话框 -->
+  <el-dialog
+    v-model="largeFilesVisible"
+    title="大文件下载确认"
+    width="550"
+  >
+    <p class="mb-3 text-gray-600">
+      以下视频/音频文件超过 {{ config.large_file_threshold }}MB，将通过直链单独下载（不打包进 zip）：
+    </p>
+    <el-table :data="largeFiles" max-height="300" size="small">
+      <el-table-column prop="path" label="文件" min-width="200">
+        <template #default="{ row }">
+          <div class="text-left text-sm">{{ row.path }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="size" label="大小" align="center" width="100">
+        <template #default="{ row }">
+          <span class="text-sm">{{ humanSize(row.size) }}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="cancelLargeDownload">取消</el-button>
+        <el-button type="primary" @click="confirmLargeDownload">
+          确认下载
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 
   <ConfigDialog ref="configRef" />
 </template>
